@@ -17,18 +17,23 @@ export default function LoginPage() {
     setLoading(true)
     setError("")
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    })
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      })
 
-    if (result?.error) {
-      setError("Invalid email or password")
+      if (result?.error) {
+        setError(result.error === "CredentialsSignin" ? "Invalid email or password" : result.error)
+        setLoading(false)
+      } else {
+        router.push("/dashboard")
+        router.refresh()
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Connection failed. Check that the server is running.")
       setLoading(false)
-    } else {
-      router.push("/dashboard")
-      router.refresh()
     }
   }
 
