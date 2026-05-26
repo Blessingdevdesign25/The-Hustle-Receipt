@@ -190,16 +190,38 @@ npx prisma migrate deploy
 
 ---
 
-## Supabase swap (production)
+## Production swap
 
-1. Create a Supabase project
-2. Copy the **Postgres connection string** (with `?pgbouncer=true` for pooling) into `DATABASE_URL`
-3. Add a direct URL `DIRECT_URL` (without pgbouncer) and update `schema.prisma`:
-```prisma
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")   // needed for migrations
-}
-```
-4. Change `TipStatus` enum — SQLite doesn't support native enums, Postgres does. The schema above works for both if you use `String` for SQLite and switch to the `enum` declaration for Postgres.
+The project uses `@prisma/adapter-libsql` which works with both local SQLite files and remote [Turso](https://turso.tech) databases (free tier available).
+
+### Turso (recommended — no code changes)
+
+1. Create a Turso account and database:
+   ```bash
+   # Install Turso CLI
+   npm install -g turso
+   
+   # Login and create database
+   turso auth login
+   turso db create hustle-receipt
+   
+   # Get the connection URL (with auth token)
+   turso db show hustle-receipt --url
+   turso db tokens create hustle-receipt
+   ```
+2. Set `DATABASE_URL` to the Turso connection URL in Vercel:
+   ```
+   DATABASE_URL="libsql://hustle-receipt.turso.io?authToken=your-token"
+   ```
+3. Push the schema:
+   ```bash
+   npx prisma db push
+   ```
+4. Deploy to Vercel — no code changes needed.
+
+### Why Turso instead of Postgres?
+
+- The project already uses `@prisma/adapter-libsql` + `@libsql/client` — no new packages
+- Turso is wire-compatible with SQLite, so the schema provider (`sqlite`) stays the same
+- No migration changes needed
+- Free tier includes 9GB stored data and 1B rows read/month

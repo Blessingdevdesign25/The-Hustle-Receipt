@@ -8,9 +8,8 @@ Create `.env.local` in the project root with these variables. Never commit this 
 # SQLite (local dev)
 DATABASE_URL="file:./dev.db"
 
-# Supabase Postgres (production) — replace the above with:
-# DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres?pgbouncer=true"
-# DIRECT_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres"
+# Turso (production) — libsql hosted. Create a free DB at https://turso.tech:
+# DATABASE_URL="libsql://your-db-name.turso.io?authToken=your-auth-token"
 
 
 # ── NextAuth ──────────────────────────────────────────────────────────────────
