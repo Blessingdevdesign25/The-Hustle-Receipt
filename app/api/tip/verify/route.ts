@@ -1,19 +1,23 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { verifyTransaction } from "@/lib/flutterwave"
+import { verifyPaymentSchema } from "@/lib/validation"
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const transactionId = searchParams.get("transaction_id")
-    const slug = searchParams.get("slug")
+    const raw = Object.fromEntries(searchParams)
+    const parsed = verifyPaymentSchema.safeParse(raw)
 
-    if (!transactionId || !slug) {
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Invalid input"
       return NextResponse.json(
-        { verified: false, error: "transaction_id and slug are required" },
+        { verified: false, error: firstError },
         { status: 400 }
       )
     }
+
+    const { transaction_id: transactionId } = parsed.data
 
     const existing = await prisma.tip.findUnique({
       where: { flutterwaveTransactionId: transactionId },

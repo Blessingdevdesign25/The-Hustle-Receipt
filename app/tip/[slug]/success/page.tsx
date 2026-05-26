@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { verifyTransaction } from "@/lib/flutterwave"
-import Link from "next/link"
+import { successSearchParamsSchema } from "@/lib/validation"
 
 export const dynamic = "force-dynamic"
 
@@ -13,100 +13,33 @@ export default async function SuccessPage({
   searchParams: Promise<{ transaction_id?: string; status?: string; tx_ref?: string }>
 }) {
   const { slug } = await params
-  const { transaction_id, status } = await searchParams
+  const raw = await searchParams
 
-  const creator = await prisma.user.findUnique({ where: { slug } })
+  let creator = await prisma.user.findUnique({ where: { slug } })
+
+  if (!creator) {
+    creator = await prisma.user.findFirst({
+      where: { slug: { startsWith: slug + "-" } },
+      orderBy: { createdAt: "desc" },
+    })
+  }
+
   if (!creator) notFound()
 
-  if (status !== "successful" || !transaction_id) {
-    return (
-      <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
-        <div className="mb-4 text-4xl">😕</div>
-        <h1 className="text-xl font-bold">Payment unsuccessful</h1>
-        <p className="mt-2 text-sm text-zinc-500">
-          The payment did not go through. Please try again.
-        </p>
-        <Link
-          href={`/tip/${slug}`}
-          className="mt-6 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
-        >
-          Try again
-        </Link>
-      </div>
-    )
+  const parsed = successSearchParamsSchema.safeParse(raw)
+  if (!parsed.success || raw.status !== "successful" || !raw.transaction_id) {
+    redirect(`/tip/${slug}/failed`)
   }
 
-  let tip: { amount: number; currency: string; tipperName: string | null; message: string | null; createdAt: string } | null = null
-  let error: string | null = null
+  const { transaction_id } = parsed.data
 
-  try {
-    const transaction = await verifyTransaction(transaction_id)
+  const result = await verifyAndSaveTip(transaction_id)
 
-    if (transaction.status !== "successful" || transaction.currency !== "NGN") {
-      throw new Error("Payment verification failed")
-    }
-
-    const existing = await prisma.tip.findUnique({
-      where: { flutterwaveTransactionId: transaction_id },
-    })
-
-    if (existing) {
-      tip = {
-        amount: existing.amount,
-        currency: existing.currency,
-        tipperName: existing.tipperName,
-        message: existing.message,
-        createdAt: existing.createdAt.toISOString(),
-      }
-    } else {
-      const tipRecord = await prisma.tip.findUnique({
-        where: { txRef: transaction.tx_ref },
-      })
-
-      if (!tipRecord) {
-        throw new Error("Transaction reference not found")
-      }
-
-      if (transaction.amount < tipRecord.amount) {
-        throw new Error("Amount mismatch")
-      }
-
-      const updated = await prisma.tip.update({
-        where: { id: tipRecord.id },
-        data: {
-          flutterwaveTransactionId: String(transaction.id),
-          status: "VERIFIED",
-          verifiedAt: new Date(),
-        },
-      })
-
-      tip = {
-        amount: updated.amount,
-        currency: updated.currency,
-        tipperName: updated.tipperName,
-        message: updated.message,
-        createdAt: updated.createdAt.toISOString(),
-      }
-    }
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Verification failed"
+  if (!result) {
+    redirect(`/tip/${slug}/failed`)
   }
 
-  if (error || !tip) {
-    return (
-      <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
-        <div className="mb-4 text-4xl">😕</div>
-        <h1 className="text-xl font-bold">Verification failed</h1>
-        <p className="mt-2 text-sm text-zinc-500">{error || "Could not verify payment"}</p>
-        <Link
-          href={`/tip/${slug}`}
-          className="mt-6 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
-        >
-          Try again
-        </Link>
-      </div>
-    )
-  }
+  const { tip } = result
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
@@ -165,4 +98,61 @@ export default async function SuccessPage({
       </p>
     </div>
   )
+}
+
+async function verifyAndSaveTip(
+  transactionId: string
+): Promise<{ tip: { amount: number; currency: string; tipperName: string | null; message: string | null; createdAt: string } } | null> {
+  try {
+    const transaction = await verifyTransaction(transactionId)
+
+    if (transaction.status !== "successful" || transaction.currency !== "NGN") {
+      return null
+    }
+
+    const existing = await prisma.tip.findUnique({
+      where: { flutterwaveTransactionId: transactionId },
+    })
+
+    if (existing) {
+      return {
+        tip: {
+          amount: existing.amount,
+          currency: existing.currency,
+          tipperName: existing.tipperName,
+          message: existing.message,
+          createdAt: existing.createdAt.toISOString(),
+        },
+      }
+    }
+
+    const tipRecord = await prisma.tip.findUnique({
+      where: { txRef: transaction.tx_ref },
+    })
+
+    if (!tipRecord || transaction.amount < tipRecord.amount) {
+      return null
+    }
+
+    const updated = await prisma.tip.update({
+      where: { id: tipRecord.id },
+      data: {
+        flutterwaveTransactionId: String(transaction.id),
+        status: "VERIFIED",
+        verifiedAt: new Date(),
+      },
+    })
+
+    return {
+      tip: {
+        amount: updated.amount,
+        currency: updated.currency,
+        tipperName: updated.tipperName,
+        message: updated.message,
+        createdAt: updated.createdAt.toISOString(),
+      },
+    }
+  } catch {
+    return null
+  }
 }

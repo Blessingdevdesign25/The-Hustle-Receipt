@@ -5,7 +5,14 @@ import type { Metadata } from "next"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const creator = await prisma.user.findUnique({ where: { slug } })
+  let creator = await prisma.user.findUnique({ where: { slug } })
+
+  if (!creator) {
+    creator = await prisma.user.findFirst({
+      where: { slug: { startsWith: slug + "-" } },
+      orderBy: { createdAt: "desc" },
+    })
+  }
 
   if (!creator) return { title: "Creator not found" }
 
@@ -21,7 +28,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function TipPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const creator = await prisma.user.findUnique({ where: { slug } })
+  let creator = await prisma.user.findUnique({ where: { slug } })
+
+  if (!creator) {
+    creator = await prisma.user.findFirst({
+      where: { slug: { startsWith: slug + "-" } },
+      orderBy: { createdAt: "desc" },
+    })
+  }
 
   if (!creator) notFound()
 

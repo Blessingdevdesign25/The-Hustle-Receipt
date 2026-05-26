@@ -19,16 +19,18 @@ This document covers the full request/response flow, every route, and the contra
 ### Protected routes
 
 | Route | Component | Guard |
-|---|---|---|
+|---|---|---|---|
 | `/dashboard` | `app/dashboard/page.tsx` | NextAuth session check → redirect to /login |
+| `/tip/[slug]/failed` | `app/tip/[slug]/failed/page.tsx` | None — shows payment failure with retry link |
 
 ### API routes
 
 | Method | Route | Auth | Purpose |
 |---|---|---|---|
-| POST | `/api/tip/initiate` | None | Receives tip form data, calls FLW, returns `{ checkout_url }` |
+| POST | `/api/tip/initiate` | None | Receives tip form data, calls FLW, returns `{ checkout_url }` (rate limited) |
 | GET | `/api/tip/verify` | None | Verifies FLW transaction_id, saves tip to DB |
 | GET | `/api/dashboard` | Required | Returns `{ totalAmount, tipCount, recentTips[], messages[] }` |
+| POST | `/api/webhooks/flutterwave` | Webhook secret | Reliable async payment confirmation from Flutterwave |
 
 ---
 
@@ -38,24 +40,35 @@ This document covers the full request/response flow, every route, and the contra
 Fan fills form
   → POST /api/tip/initiate
       body: { creatorSlug, tipperName?, tipperEmail, amount, message? }
+      server: Zod validation + rate limit check
       server: looks up creator by slug, builds FLW payload
       server: POST https://api.flutterwave.com/v3/payments
       response: { checkout_url: "https://checkout.flutterwave.com/v3/hosted/pay/..." }
   → Client redirects fan to checkout_url
 
 Fan completes payment on Flutterwave
-  → FLW redirects to /tip/[slug]/success?transaction_id=FLW-XXXX&status=successful
+  → FLW redirects to /tip/[slug]/success?transaction_id=FLW-XXXX&status=successful&tx_ref=tip-...
 
 Success page loads
-  → calls GET /api/tip/verify?transaction_id=FLW-XXXX&slug=[slug]
+  → Zod validates searchParams
+  → If status !== "successful" → redirect to /tip/[slug]/failed
+  → verifyAndSaveTip(transaction_id, slug):
       server: GET https://api.flutterwave.com/v3/transactions/{id}/verify
               (uses FLWSECK_TEST secret key — server-side only)
       checks: status === "successful"
-      checks: amount matches what was initiated
+      checks: amount matches what was initiated (>= db record)
       checks: currency === "NGN"
-      if valid: prisma.tip.create(...)
-      response: { verified: true, tip: { amount, tipperName, message } }
+      checks: tx_ref matches existing PENDING record (anti-replay)
+      if valid: prisma.tip.update(...) → set VERIFIED
+      if existing flutterwaveTransactionId → return cached (idempotent)
   → Page shows receipt UI
+
+FLW webhook (async fallback — POST /api/webhooks/flutterwave)
+  → verifies verif-hash header matches FLUTTERWAVE_WEBHOOK_SECRET
+  → handles charge.completed events
+  → looks up PENDING tip by tx_ref
+  → validates and updates to VERIFIED or FAILED
+  → covers cases where user closes browser before redirect
 ```
 
 ---

@@ -2,29 +2,40 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { initiatePayment } from "@/lib/flutterwave"
 import { generateTxRef } from "@/lib/utils"
+import { initiatePaymentSchema } from "@/lib/validation"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
+    const { allowed, remaining } = checkRateLimit(ip)
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": "60" } }
+      )
+    }
+
     const body = await request.json()
-    const { creatorSlug, tipperName, tipperEmail, amount, message } = body
+    const parsed = initiatePaymentSchema.safeParse(body)
 
-    if (!creatorSlug || !tipperEmail || !amount) {
-      return NextResponse.json(
-        { error: "creatorSlug, tipperEmail, and amount are required" },
-        { status: 400 }
-      )
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Invalid input"
+      return NextResponse.json({ error: firstError }, { status: 400 })
     }
 
-    if (typeof amount !== "number" || amount < 100) {
-      return NextResponse.json(
-        { error: "Amount must be at least 100 NGN" },
-        { status: 400 }
-      )
-    }
+    const { creatorSlug, tipperName, tipperEmail, amount, message } = parsed.data
 
-    const creator = await prisma.user.findUnique({
+    let creator = await prisma.user.findUnique({
       where: { slug: creatorSlug },
     })
+
+    if (!creator) {
+      creator = await prisma.user.findFirst({
+        where: { slug: { startsWith: creatorSlug + "-" } },
+        orderBy: { createdAt: "desc" },
+      })
+    }
 
     if (!creator) {
       return NextResponse.json(
@@ -60,7 +71,10 @@ export async function POST(request: Request) {
       meta: { creatorId: creator.id, message: message || "" },
     })
 
-    return NextResponse.json({ checkoutUrl })
+    return NextResponse.json(
+      { checkoutUrl },
+      { headers: { "X-RateLimit-Remaining": String(remaining) } }
+    )
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to initiate payment"
     return NextResponse.json({ error: message }, { status: 500 })

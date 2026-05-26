@@ -101,14 +101,14 @@ Phased checklist. Each phase should be shippable before moving to the next.
 
 ## Phase 5 — Polish and edge cases
 
-- [ ] Empty states: no tips yet, creator not found (404)
-- [ ] Error states: payment failed, verification failed
-- [ ] Loading skeletons on dashboard
+- [X] Empty states: no tips yet, creator not found (404)
+- [X] Error states: payment failed, verification failed
+- [X] Loading skeletons on dashboard
 - [ ] Mobile-responsive tip form and dashboard
 - [ ] `og:image` and `og:title` meta for `/tip/[slug]` (shareable link preview)
-- [ ] Input validation with Zod on API routes
-- [ ] Rate limiting on `/api/tip/initiate` (basic — prevent spam)
-- [ ] `NEXT_PUBLIC_BASE_URL` used correctly for redirect URL construction
+- [X] Input validation with Zod on API routes
+- [X] Rate limiting on `/api/tip/initiate` (basic — prevent spam)
+- [X] `NEXT_PUBLIC_BASE_URL` used correctly for redirect URL construction
 
 ---
 
@@ -118,4 +118,4 @@ Phased checklist. Each phase should be shippable before moving to the next.
 - [ ] Deploy to Vercel
 - [ ] Set all env vars in Vercel dashboard
 - [ ] Switch Flutterwave to live keys (after business verification)
-- [ ] Add webhook endpoint for reliable verification
+- [X] Add webhook endpoint for reliable verification
