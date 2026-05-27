@@ -51,7 +51,7 @@ export default async function SuccessPage({
 
       <div className="mt-8 w-full rounded-xl border border-zinc-200 bg-white p-6 text-left">
         <div className="border-b border-zinc-100 pb-4">
-          <p className="text-xs uppercase tracking-wider text-zinc-400">Receipt</p>
+          <p className="text-xs uppercase tracking-wider text-zinc-500">Receipt</p>
           <p className="mt-1 text-3xl font-bold">
             ₦{tip.amount.toLocaleString()}
           </p>
@@ -93,7 +93,7 @@ export default async function SuccessPage({
         </dl>
       </div>
 
-      <p className="mt-6 text-xs text-zinc-400">
+      <p className="mt-6 text-xs text-zinc-500">
         Powered by The Hustle Receipt &amp; Flutterwave
       </p>
     </div>

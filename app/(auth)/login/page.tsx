@@ -40,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex max-w-sm flex-col justify-center px-4 py-24">
       <h1 className="mb-2 text-2xl font-bold">Sign in</h1>
-      <p className="mb-8 text-sm text-zinc-500">
+      <p className="mb-8 text-sm text-zinc-600">
         Welcome back to The Hustle Receipt
       </p>
 
@@ -88,7 +88,7 @@ export default function LoginPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <p className="mt-6 text-center text-sm text-zinc-600">
         Don&apos;t have an account?{" "}
         <Link href="/signup" className="font-medium text-zinc-900 underline">
           Sign up

@@ -68,7 +68,7 @@ export function TipForm({
 
       <div>
         <label htmlFor="name" className="mb-1 block text-sm font-medium text-zinc-700">
-          Your name <span className="text-zinc-400">(optional)</span>
+          Your name <span className="text-zinc-500">(optional)</span>
         </label>
         <input
           id="name"
@@ -128,7 +128,7 @@ export function TipForm({
 
       <div>
         <label htmlFor="message" className="mb-1 block text-sm font-medium text-zinc-700">
-          Message <span className="text-zinc-400">(optional)</span>
+          Message <span className="text-zinc-500">(optional)</span>
         </label>
         <textarea
           id="message"

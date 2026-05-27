@@ -47,7 +47,7 @@ export default function SignupPage() {
   return (
     <div className="mx-auto flex max-w-sm flex-col justify-center px-4 py-24">
       <h1 className="mb-2 text-2xl font-bold">Create your account</h1>
-      <p className="mb-8 text-sm text-zinc-500">
+      <p className="mb-8 text-sm text-zinc-600">
         Start receiving tips from your audience
       </p>
 
@@ -110,7 +110,7 @@ export default function SignupPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <p className="mt-6 text-center text-sm text-zinc-600">
         Already have an account?{" "}
         <Link href="/login" className="font-medium text-zinc-900 underline">
           Sign in

@@ -15,7 +15,7 @@ export function Nav() {
         <nav className="flex items-center gap-4 text-sm">
           {session ? (
             <>
-              <Link href="/dashboard" className="font-medium text-zinc-700 hover:text-zinc-900">
+              <Link href="/dashboard" className="font-medium text-zinc-800 hover:text-zinc-900">
                 Dashboard
               </Link>
               <button
@@ -27,7 +27,7 @@ export function Nav() {
             </>
           ) : (
             <>
-              <Link href="/login" className="font-medium text-zinc-700 hover:text-zinc-900">
+              <Link href="/login" className="font-medium text-zinc-800 hover:text-zinc-900">
                 Sign in
               </Link>
               <Link

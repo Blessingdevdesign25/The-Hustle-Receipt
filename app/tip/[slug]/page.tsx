@@ -45,8 +45,8 @@ export default async function TipPage({ params }: { params: Promise<{ slug: stri
         {creator.displayName.charAt(0).toUpperCase()}
       </div>
       <h1 className="text-2xl font-bold">{creator.displayName}</h1>
-      {creator.bio && <p className="mt-1 text-sm text-zinc-500">{creator.bio}</p>}
-      <p className="mt-1 text-xs text-zinc-400">@{creator.slug}</p>
+        {creator.bio && <p className="mt-1 text-sm text-zinc-600">{creator.bio}</p>}
+      <p className="mt-1 text-xs text-zinc-500">@{creator.slug}</p>
 
       <div className="mt-8 w-full">
         <TipForm creatorSlug={creator.slug} creatorName={creator.displayName} />

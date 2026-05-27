@@ -6,7 +6,7 @@ export default function HomePage() {
       <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
         The Hustle Receipt
       </h1>
-      <p className="mt-4 max-w-md text-lg text-zinc-500">
+      <p className="mt-4 max-w-md text-lg text-zinc-600">
         A page a creator can share. A way fans can tip. A verified receipt at the end.
       </p>
 
@@ -29,21 +29,21 @@ export default function HomePage() {
         <div className="rounded-xl border border-zinc-200 bg-white p-6 text-left">
           <div className="mb-3 text-2xl">🔗</div>
           <h3 className="font-semibold">Share your link</h3>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-zinc-600">
             Get a public page at /tip/your-name. Share it anywhere.
           </p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-6 text-left">
           <div className="mb-3 text-2xl">💸</div>
           <h3 className="font-semibold">Receive tips</h3>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-zinc-600">
             Fans send you money via Flutterwave. Real payments, real Naira.
           </p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-6 text-left">
           <div className="mb-3 text-2xl">📊</div>
           <h3 className="font-semibold">Track everything</h3>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-zinc-600">
             Dashboard with stats, recent tips, and a message wall from your supporters.
           </p>
         </div>

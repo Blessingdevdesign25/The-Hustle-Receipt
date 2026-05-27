@@ -25,7 +25,7 @@ export default async function FailedPage({
       >
         Try again
       </Link>
-      <p className="mt-4 text-xs text-zinc-400">
+      <p className="mt-4 text-xs text-zinc-500">
         Powered by The Hustle Receipt &amp; Flutterwave
       </p>
     </div>
