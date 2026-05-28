@@ -47,7 +47,7 @@ export default function SignupPage() {
   return (
     <div className="mx-auto flex max-w-sm flex-col justify-center px-4 py-24">
       <h1 className="mb-2 text-2xl font-bold">Create your account</h1>
-      <p className="mb-8 text-sm text-zinc-600">
+      <p className="mb-8 text-sm text-foreground/70">
         Start receiving tips from your audience
       </p>
 
@@ -67,7 +67,7 @@ export default function SignupPage() {
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+            className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
             required
           />
         </div>
@@ -81,7 +81,7 @@ export default function SignupPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+            className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
             required
           />
         </div>
@@ -95,7 +95,7 @@ export default function SignupPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+            className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
             minLength={6}
             required
           />
@@ -104,15 +104,15 @@ export default function SignupPage() {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50"
+          className="rounded-lg bg-foreground py-2.5 text-sm font-medium text-background hover:opacity-90 disabled:opacity-50"
         >
           {loading ? "Creating account..." : "Create account"}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-foreground/70">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-zinc-900 underline">
+        <Link href="/login" className="font-medium text-foreground underline">
           Sign in
         </Link>
       </p>

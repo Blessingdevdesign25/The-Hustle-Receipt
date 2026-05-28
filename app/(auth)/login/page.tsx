@@ -40,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex max-w-sm flex-col justify-center px-4 py-24">
       <h1 className="mb-2 text-2xl font-bold">Sign in</h1>
-      <p className="mb-8 text-sm text-zinc-600">
+      <p className="mb-8 text-sm text-foreground/70">
         Welcome back to The Hustle Receipt
       </p>
 
@@ -60,7 +60,7 @@ export default function LoginPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+            className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
             required
           />
         </div>
@@ -74,7 +74,7 @@ export default function LoginPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+            className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
             required
           />
         </div>
@@ -82,15 +82,15 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50"
+          className="rounded-lg bg-foreground py-2.5 text-sm font-medium text-background hover:opacity-90 disabled:opacity-50"
         >
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-foreground/70">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-zinc-900 underline">
+        <Link href="/signup" className="font-medium text-foreground underline">
           Sign up
         </Link>
       </p>
