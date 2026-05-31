@@ -604,6 +604,7 @@ export type TipCreateOrConnectWithoutCreatorInput = {
 
 export type TipCreateManyCreatorInputEnvelope = {
   data: Prisma.TipCreateManyCreatorInput | Prisma.TipCreateManyCreatorInput[]
+  skipDuplicates?: boolean
 }
 
 export type TipUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -1460,6 +1461,7 @@ export type TipCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * The data used to create many Tips.
    */
   data: Prisma.TipCreateManyInput | Prisma.TipCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1478,6 +1480,7 @@ export type TipCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many Tips.
    */
   data: Prisma.TipCreateManyInput | Prisma.TipCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

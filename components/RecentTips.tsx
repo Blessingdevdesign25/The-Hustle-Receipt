@@ -9,32 +9,32 @@ interface RecentTip {
 export function RecentTips({ tips }: { tips: RecentTip[] }) {
   if (tips.length === 0) {
     return (
-      <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-        <p className="text-sm text-zinc-500">No tips yet. Share your tip page to get started!</p>
+      <div className="rounded-xl border border-foreground/10 bg-background p-8 text-center">
+        <p className="text-sm text-foreground/50">No tips yet. Share your tip page to get started!</p>
       </div>
     )
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white">
+    <div className="overflow-hidden rounded-xl border border-foreground/10 bg-background">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-zinc-100 bg-zinc-50">
-            <th className="px-4 py-3 text-left font-medium text-zinc-600">From</th>
-            <th className="px-4 py-3 text-left font-medium text-zinc-600">Amount</th>
-            <th className="px-4 py-3 text-left font-medium text-zinc-600 hidden sm:table-cell">Message</th>
-            <th className="px-4 py-3 text-right font-medium text-zinc-600">Date</th>
+          <tr className="border-b border-foreground/5 bg-foreground/5">
+            <th className="px-4 py-3 text-left font-medium text-foreground/70">From</th>
+            <th className="px-4 py-3 text-left font-medium text-foreground/70">Amount</th>
+            <th className="px-4 py-3 text-left font-medium text-foreground/70 hidden sm:table-cell">Message</th>
+            <th className="px-4 py-3 text-right font-medium text-foreground/70">Date</th>
           </tr>
         </thead>
         <tbody>
           {tips.map((tip) => (
-            <tr key={tip.id} className="border-b border-zinc-100 last:border-0">
+            <tr key={tip.id} className="border-b border-foreground/5 last:border-0">
               <td className="px-4 py-3 font-medium">{tip.tipperName || "Anonymous"}</td>
               <td className="px-4 py-3">₦{tip.amount.toLocaleString()}</td>
-              <td className="hidden max-w-[200px] truncate px-4 py-3 text-zinc-600 sm:table-cell">
+              <td className="hidden max-w-[200px] truncate px-4 py-3 text-foreground/70 sm:table-cell">
                 {tip.message || "—"}
               </td>
-              <td className="px-4 py-3 text-right text-zinc-500">
+              <td className="px-4 py-3 text-right text-foreground/50">
                 {new Date(tip.createdAt).toLocaleDateString("en-NG", {
                   day: "numeric",
                   month: "short",

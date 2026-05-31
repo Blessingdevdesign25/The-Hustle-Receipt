@@ -66,8 +66,8 @@ export async function POST(request: Request) {
       email: tipperEmail,
       name: tipperName || "Anonymous",
       redirectUrl,
-      title: `Tip for ${creator.displayName}`,
-      description: message || `Support ${creator.displayName}`,
+      title: "The Hustle Receipt",
+      description: `Tip for ${creator.displayName}${message ? ` - ${message}` : ""}`,
       meta: { creatorId: creator.id, message: message || "" },
     })
 

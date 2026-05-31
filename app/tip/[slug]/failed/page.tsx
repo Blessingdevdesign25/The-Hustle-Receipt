@@ -15,17 +15,17 @@ export default async function FailedPage({
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
       <div className="mb-4 text-5xl">✕</div>
       <h1 className="text-xl font-bold">Payment failed</h1>
-      <p className="mt-2 text-sm text-zinc-500">
+      <p className="mt-2 text-sm text-foreground/50">
         The payment did not go through. This could be due to insufficient funds,
         a declined card, or a network issue.
       </p>
       <Link
         href={`/tip/${slug}`}
-        className="mt-8 rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
+        className="mt-8 rounded-lg bg-foreground px-6 py-2.5 text-sm font-medium text-background hover:opacity-90"
       >
         Try again
       </Link>
-      <p className="mt-4 text-xs text-zinc-500">
+      <p className="mt-4 text-xs text-foreground/50">
         Powered by The Hustle Receipt &amp; Flutterwave
       </p>
     </div>

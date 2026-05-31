@@ -47,13 +47,13 @@ export default function DashboardPage() {
   if (status === "loading" || isLoading) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16">
-        <div className="mb-8 h-8 w-48 animate-pulse rounded bg-zinc-200" />
+        <div className="mb-8 h-8 w-48 animate-pulse rounded bg-foreground/10" />
         <div className="mb-6 grid grid-cols-2 gap-4">
-          <div className="h-24 animate-pulse rounded-xl bg-zinc-200" />
-          <div className="h-24 animate-pulse rounded-xl bg-zinc-200" />
+          <div className="h-24 animate-pulse rounded-xl bg-foreground/10" />
+          <div className="h-24 animate-pulse rounded-xl bg-foreground/10" />
         </div>
-        <div className="mb-8 h-64 animate-pulse rounded-xl bg-zinc-200" />
-        <div className="h-48 animate-pulse rounded-xl bg-zinc-200" />
+        <div className="mb-8 h-64 animate-pulse rounded-xl bg-foreground/10" />
+        <div className="h-48 animate-pulse rounded-xl bg-foreground/10" />
       </div>
     )
   }
@@ -62,7 +62,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-3xl px-4 py-16">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground/70">
           Welcome back, {session?.user?.name}
         </p>
       </div>
@@ -89,12 +89,12 @@ export default function DashboardPage() {
       )}
 
       {data && data.tipCount === 0 && (
-        <div className="mt-8 rounded-xl border border-dashed border-zinc-300 bg-white p-8 text-center">
+        <div className="mt-8 rounded-xl border border-dashed border-foreground/20 bg-background p-8 text-center">
           <p className="font-medium">Share your tip page</p>
-          <p className="mt-1 text-sm text-zinc-600">
+          <p className="mt-1 text-sm text-foreground/70">
             Let your audience know they can support you.
           </p>
-          <div className="mt-4 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-mono text-zinc-700">
+          <div className="mt-4 rounded-lg bg-foreground/5 px-4 py-2 text-sm font-mono text-foreground/80">
             {typeof window !== "undefined" && `${window.location.origin}/tip/${session?.user?.name?.toLowerCase().replace(/\s+/g, "-") || "your-slug"}`}
           </div>
         </div>

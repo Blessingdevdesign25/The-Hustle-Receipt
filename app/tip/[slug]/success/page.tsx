@@ -45,13 +45,13 @@ export default async function SuccessPage({
     <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
       <div className="mb-4 text-5xl">✓</div>
       <h1 className="text-2xl font-bold">Payment confirmed!</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-sm text-foreground/50">
         Your tip to {creator.displayName} has been sent.
       </p>
 
-      <div className="mt-8 w-full rounded-xl border border-zinc-200 bg-white p-6 text-left">
-        <div className="border-b border-zinc-100 pb-4">
-          <p className="text-xs uppercase tracking-wider text-zinc-500">Receipt</p>
+      <div className="mt-8 w-full rounded-xl border border-foreground/10 bg-background p-6 text-left">
+        <div className="border-b border-foreground/5 pb-4">
+          <p className="text-xs uppercase tracking-wider text-foreground/50">Receipt</p>
           <p className="mt-1 text-3xl font-bold">
             ₦{tip.amount.toLocaleString()}
           </p>
@@ -59,25 +59,25 @@ export default async function SuccessPage({
 
         <dl className="mt-4 space-y-3 text-sm">
           <div className="flex justify-between">
-            <dt className="text-zinc-500">To</dt>
+            <dt className="text-foreground/50">To</dt>
             <dd className="font-medium">{creator.displayName}</dd>
           </div>
           {tip.tipperName && (
             <div className="flex justify-between">
-              <dt className="text-zinc-500">From</dt>
+              <dt className="text-foreground/50">From</dt>
               <dd className="font-medium">{tip.tipperName}</dd>
             </div>
           )}
           {tip.message && (
             <div className="flex justify-between">
-              <dt className="text-zinc-500">Message</dt>
-              <dd className="max-w-[200px] text-right italic text-zinc-600">
+              <dt className="text-foreground/50">Message</dt>
+              <dd className="max-w-[200px] text-right italic text-foreground/70">
                 &ldquo;{tip.message}&rdquo;
               </dd>
             </div>
           )}
           <div className="flex justify-between">
-            <dt className="text-zinc-500">Date</dt>
+            <dt className="text-foreground/50">Date</dt>
             <dd className="font-medium">
               {new Date(tip.createdAt).toLocaleDateString("en-NG", {
                 day: "numeric",
@@ -87,13 +87,13 @@ export default async function SuccessPage({
             </dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-zinc-500">Status</dt>
+            <dt className="text-foreground/50">Status</dt>
             <dd className="font-medium text-green-600">Verified ✓</dd>
           </div>
         </dl>
       </div>
 
-      <p className="mt-6 text-xs text-zinc-500">
+      <p className="mt-6 text-xs text-foreground/50">
         Powered by The Hustle Receipt &amp; Flutterwave
       </p>
     </div>

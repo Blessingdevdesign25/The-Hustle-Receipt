@@ -1,10 +1,11 @@
 import { PrismaClient } from "@/lib/generated/prisma/client"
-import { PrismaLibSql } from "@prisma/adapter-libsql"
+import { Pool, neonConfig } from "@neondatabase/serverless"
+import { PrismaNeon } from "@prisma/adapter-neon"
+import ws from "ws"
 
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || "file:./dev.db",
-  authToken: process.env.DATABASE_AUTH_TOKEN,
-})
+neonConfig.webSocketConstructor = ws
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const adapter = new PrismaNeon(pool)
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 

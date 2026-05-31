@@ -67,8 +67,8 @@ export function TipForm({
       )}
 
       <div>
-        <label htmlFor="name" className="mb-1 block text-sm font-medium text-zinc-700">
-          Your name <span className="text-zinc-500">(optional)</span>
+        <label htmlFor="name" className="mb-1 block text-sm font-medium text-foreground/80">
+          Your name <span className="text-foreground/50">(optional)</span>
         </label>
         <input
           id="name"
@@ -76,12 +76,12 @@ export function TipForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Anonymous"
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+          className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium text-zinc-700">
+        <label htmlFor="email" className="mb-1 block text-sm font-medium text-foreground/80">
           Your email
         </label>
         <input
@@ -89,13 +89,13 @@ export function TipForm({
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+          className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="amount" className="mb-1 block text-sm font-medium text-zinc-700">
+        <label htmlFor="amount" className="mb-1 block text-sm font-medium text-foreground/80">
           Amount (NGN)
         </label>
         <input
@@ -105,7 +105,7 @@ export function TipForm({
           onChange={(e) => setAmount(e.target.value)}
           placeholder="1000"
           min={100}
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+          className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
           required
         />
         <div className="mt-2 flex gap-2">
@@ -116,8 +116,8 @@ export function TipForm({
               onClick={() => setAmount(String(preset))}
               className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
                 Number(amount) === preset
-                  ? "border-zinc-900 bg-zinc-900 text-white"
-                  : "border-zinc-300 text-zinc-600 hover:border-zinc-400"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-foreground/20 text-foreground/70 hover:border-foreground/40"
               }`}
             >
               ₦{preset.toLocaleString()}
@@ -127,8 +127,8 @@ export function TipForm({
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1 block text-sm font-medium text-zinc-700">
-          Message <span className="text-zinc-500">(optional)</span>
+        <label htmlFor="message" className="mb-1 block text-sm font-medium text-foreground/80">
+          Message <span className="text-foreground/50">(optional)</span>
         </label>
         <textarea
           id="message"
@@ -136,14 +136,14 @@ export function TipForm({
           onChange={(e) => setMessage(e.target.value)}
           placeholder={`Say something nice to ${creatorName}...`}
           rows={3}
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
+          className="w-full rounded-lg border border-foreground/20 bg-transparent px-3 py-2 text-sm focus:border-foreground focus:outline-none"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="rounded-lg bg-zinc-900 py-3 text-sm font-semibold text-white hover:bg-zinc-800 disabled:opacity-50"
+        className="rounded-lg bg-foreground py-3 text-sm font-semibold text-background hover:opacity-90 disabled:opacity-50"
       >
         {loading ? "Redirecting to payment..." : `Send ₦${Number(amount) ? Number(amount).toLocaleString() : "..."}`}
       </button>

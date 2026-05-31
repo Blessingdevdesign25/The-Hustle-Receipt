@@ -41,12 +41,12 @@ export default async function TipPage({ params }: { params: Promise<{ slug: stri
 
   return (
     <div className="mx-auto flex max-w-lg flex-col items-center px-4 py-16 text-center">
-      <div className="mb-2 h-16 w-16 rounded-full bg-zinc-200 flex items-center justify-center text-2xl font-bold text-zinc-500">
+      <div className="mb-2 h-16 w-16 rounded-full bg-foreground/10 flex items-center justify-center text-2xl font-bold text-foreground/50">
         {creator.displayName.charAt(0).toUpperCase()}
       </div>
       <h1 className="text-2xl font-bold">{creator.displayName}</h1>
-        {creator.bio && <p className="mt-1 text-sm text-zinc-600">{creator.bio}</p>}
-      <p className="mt-1 text-xs text-zinc-500">@{creator.slug}</p>
+        {creator.bio && <p className="mt-1 text-sm text-foreground/70">{creator.bio}</p>}
+      <p className="mt-1 text-xs text-foreground/50">@{creator.slug}</p>
 
       <div className="mt-8 w-full">
         <TipForm creatorSlug={creator.slug} creatorName={creator.displayName} />
